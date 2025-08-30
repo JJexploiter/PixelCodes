@@ -1,0 +1,100 @@
+--== PixelCode++ Client-Side Executor==--
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "PixelCode++"
+ScreenGui.Parent = game:GetService("CoreGui")
+
+-- Painel principal
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 420, 0, 370)
+MainFrame.Position = UDim2.new(0.5, -210, 0.5, -185)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+-- Título
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1,0,0,50)
+Title.BackgroundTransparency = 1
+Title.Text = "PixelCode++"
+Title.TextColor3 = Color3.fromRGB(0,255,255)
+Title.Font = Enum.Font.Code
+Title.TextSize = 24
+Title.Parent = MainFrame
+
+-- Caixa de texto para scripts
+local ScriptBox = Instance.new("TextBox")
+ScriptBox.Size = UDim2.new(0, 380, 0, 160)
+ScriptBox.Position = UDim2.new(0,20,0,60)
+ScriptBox.ClearTextOnFocus = false
+ScriptBox.Text = "-- Cole seu código LuaU aqui"
+ScriptBox.TextWrapped = true
+ScriptBox.TextXAlignment = Enum.TextXAlignment.Left
+ScriptBox.TextYAlignment = Enum.TextYAlignment.Top
+ScriptBox.TextColor3 = Color3.fromRGB(255,255,255)
+ScriptBox.BackgroundColor3 = Color3.fromRGB(35,35,35)
+ScriptBox.BorderSizePixel = 0
+ScriptBox.Font = Enum.Font.Code
+ScriptBox.TextSize = 16
+ScriptBox.Parent = MainFrame
+
+-- Botão Run
+local RunButton = Instance.new("TextButton")
+RunButton.Size = UDim2.new(0, 180, 0, 45)
+RunButton.Position = UDim2.new(0,20,0,240)
+RunButton.BackgroundColor3 = Color3.fromRGB(0,200,255)
+RunButton.Text = "Run"
+RunButton.Font = Enum.Font.Code
+RunButton.TextSize = 20
+RunButton.TextColor3 = Color3.fromRGB(255,255,255)
+RunButton.Parent = MainFrame
+
+-- Botão Inject Falso
+local InjectButton = Instance.new("TextButton")
+InjectButton.Size = UDim2.new(0, 180, 0, 45)
+InjectButton.Position = UDim2.new(0,220,0,240)
+InjectButton.BackgroundColor3 = Color3.fromRGB(0,150,255)
+InjectButton.Text = "Inject"
+InjectButton.Font = Enum.Font.Code
+InjectButton.TextSize = 20
+InjectButton.TextColor3 = Color3.fromRGB(255,255,255)
+InjectButton.Parent = MainFrame
+
+-- Função Run
+RunButton.MouseButton1Click:Connect(function()
+    local code = ScriptBox.Text
+    local success, err = pcall(function()
+        loadstring(code)()
+    end)
+    if not success then
+        warn("Erro ao executar script:", err)
+    end
+end)
+
+-- Função Inject falso
+InjectButton.MouseButton1Click:Connect(function()
+    print("Injecting...")
+    delay(2, function()
+        print("Successfully injected.")
+    end)
+end)
+
+-- Efeitos visuais
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0,8)
+UICorner.Parent = MainFrame
+
+local RunCorner = Instance.new("UICorner")
+RunCorner.CornerRadius = UDim.new(0,6)
+RunCorner.Parent = RunButton
+
+local InjectCorner = Instance.new("UICorner")
+InjectCorner.CornerRadius = UDim.new(0,6)
+InjectCorner.Parent = InjectButton
